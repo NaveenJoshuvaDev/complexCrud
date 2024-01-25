@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Userdetail;
 use Illuminate\Http\Request;
 
@@ -11,7 +12,8 @@ class UserformController extends Controller
 
     public function index()
     {
-        return view('index');
+           $userdetail=Userdetail::all();
+        return view('index', ['userdetail'=> $userdetail]);
     }
     public function create()
     {
@@ -37,7 +39,7 @@ class UserformController extends Controller
  if($request->hasFile('image'))
  {
     $customFileName = time() . '-' . $request->file('image')->getClientOriginalExtension();
-    $imagePath = $request->file('image')->move(storage_path('storage/images'), $customFileName);
+    $imagePath = $request->file('image')->move(public_path('storage/images'), $customFileName);
 
  }
  else {
@@ -56,4 +58,27 @@ class UserformController extends Controller
      Userdetail::create($userdetaildata);
     return redirect(route('user.index'));
     }
+
+    public function edit($id)
+
+    { 
+    $userdetail =Userdetail::find($id);
+
+        return view('edit',['userdetail'=> $userdetail]);
+    }
+
+
+   public function update($id, Request $request)
+   {
+    $userdetail =Userdetail::find($id);
+    $data=$request->validate([
+        'name'=>'required|string|max:255',
+        'image'=>'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'skill'=>'array|required',
+        'skill.*' => 'in:Php,Python,C++',
+        'gender'=>'required|string|max:255',
+        'country'=>'required|string|max:255'
+     ]);
+   }
+
 }

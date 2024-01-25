@@ -8,6 +8,13 @@
   </head>
   <body>
     <div class="container mt-3">
+    <div class="d-flex justify-content-center align-items-center " >
+        @yield('link') 
+    </div>
+    <div class="d-flex justify-content-center align-items-center " >
+       @yield('windowTitle')
+    </div>
+
     <div class="d-flex justify-content-center align-items-center " style="min-height: 100vh; ">
        @yield('content')
     </div>

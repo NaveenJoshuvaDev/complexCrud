@@ -22,3 +22,5 @@ Route::get('/index',[UserformController::class, 'index'])->name('user.index');
 
 Route::get('/create', [UserformController::class, 'create'])->name('user.create');
 Route::post('/store', [UserformController::class, 'store'])->name('user.store');
+Route::get('/edit/{id}', [UserformController::class, 'edit'])->name('user.edit');
+Route::get('/update/{id}',[UserformController::class, 'update'])->name('user.update');
