@@ -4,16 +4,25 @@
 <div class="center"><h1>Edit Page</h1></div>
 @endsection
 @section('content')
-<form action="{{route('user.update',['id'=>$userdetail->id])}}"  method="post">
+<div>
+@if($errors->any())
+        <ul>
+            @foreach($errors->all() as $error)
+            <li>{{$error}}</li>
+            @endforeach
+        </ul>
+        @endif
+</div>
+<form action="{{route('user.update',['id'=>$userdetail->id])}}"  method="post" enctype="multipart/form-data">
 @csrf
-    @method('put')
+    @method('post')
     <div class=mb-3>
         <label class="form-label">Name</label>
-        <input type="text" class="form-control" value="{{$userdetail->name}}">
+        <input type="text" name="name" class="form-control" value="{{$userdetail->name}}">
     </div>
     <div class="mb-3">
         <label class="form-label">Image</label>
-        <input type="file" class="form-control" value="{{$userdetail->image}}">
+        <input type="file" name="image" class="form-control" value="{{$userdetail->image}}">
     </div>
     <legend>Skill</legend>
     <div class="form-check mb-3">

@@ -73,12 +73,42 @@ class UserformController extends Controller
     $userdetail =Userdetail::find($id);
     $data=$request->validate([
         'name'=>'required|string|max:255',
-        'image'=>'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'image'=>'image|mimes:jpeg,png,jpg,gif|max:2048',
         'skill'=>'array|required',
         'skill.*' => 'in:Php,Python,C++',
         'gender'=>'required|string|max:255',
         'country'=>'required|string|max:255'
      ]);
+     
+    // Update user details
+    $userdetail->name = $data['name'];
+    $userdetail->gender = $data['gender'];
+    $userdetail->country = $data['country'];
+
+    // Handle image upload
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $image->move(public_path('images'), $imageName);
+        $userdetail->image = $imageName;
+    }
+
+    // Convert array of skills to comma-separated string
+    $userdetail->skill = implode(',', $data['skill']);
+
+    // Save updated user details
+    $userdetail->save();
+
+    return redirect()->route('user.index', ['id' => $userdetail->id])->with('success', 'User details updated successfully');
+   }
+
+   public function delete(Request $request, $id)
+   {
+    
+    $user = Userdetail::find($id);
+    $user->delete();
+
+    return redirect(route('user.index'));
    }
 
 }

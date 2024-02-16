@@ -39,11 +39,26 @@
                 <td>{{$userrecords->gender}}</td>
                 <td>{{$userrecords->country}}</td>
                 <td><a href="{{route('user.edit', ['id' => $userrecords->id])}}">Edit</a></td>
-                <td><a href="">Delete</a></td>
+                <td>
+
+                    <button onclick="confirmAndDelete('{{ $userrecords->id }}')">Delete</button>
+                </td>
+
+               
             </tr>
             @endforeach
    
   </tbody>
 </table>
 </div>
+<!-- At the end of your blade file or in an external script file -->
+<script>
+    function confirmAndDelete(userId) {
+        if (confirm('Are you sure you want to delete this user?')) {
+            // Redirect to the delete route
+            window.location.href = "{{ route('user.delete', ['id' => ':userId']) }}".replace(':userId', userId);
+        }
+    }
+</script>
+
 @endsection
